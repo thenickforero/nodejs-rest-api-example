@@ -20,4 +20,4 @@ phases:
     - echo Build completed on `date`
     - echo pushing to repo
     # update the following line with the URI of your own ECR repository
-    - docker push --all-tags $IMAGE_NAME
+    - docker push -a $IMAGE_NAME
