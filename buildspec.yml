@@ -4,20 +4,20 @@ phases:
     commands:
     - echo Logging in to Amazon ECR....
     - aws --version
-    # update the following line with your own region
-    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+    - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
     - IMAGE_TAG=$(git describe --tags --abbrev=0)
     - echo tag $IMAGE_TAG
-    - REPOSITORY_URI=509517228226.dkr.ecr.us-east-1.amazonaws.com/test-image-repo
+    - IMAGE_NAME=${$REPOSITORY_URI/$IMAGE_REPO_NAME/hydra}
+    - echo image $IMAGE_NAME
   build:
     commands:
     - echo Build started on `date`
     - echo Building the Docker image...
-    - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
-    - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+    - docker build -t $IMAGE_NAME -t $IMAGE_NAME:$IMAGE_TAG .
   post_build:
     commands:
     - echo Build completed on `date`
     - echo pushing to repo
     # update the following line with the URI of your own ECR repository
-    - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+    - docker push --all-tags $IMAGE_NAME
