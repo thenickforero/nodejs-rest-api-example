@@ -41,7 +41,6 @@ app.delete('/', function (req, res) {
 })
 
 var server = app.listen(app.get("port"), function () {
-
   var host = server.address().address
   var port = server.address().port
 
