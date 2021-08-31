@@ -8,7 +8,7 @@ phases:
     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
     - IMAGE_TAG=$(git describe --tags --abbrev=0)
     - echo tag $IMAGE_TAG
-    - IMAGE_NAME=$REPOSITORY_URI/$IMAGE_REPO_NAME/hydra
+    - IMAGE_NAME=$REPOSITORY_URI/$IMAGE_REPO_NAME
     - echo image $IMAGE_NAME
   build:
     commands:
@@ -19,6 +19,6 @@ phases:
     commands:
     - echo Build completed on `date`
     - echo pushing to repo
-    - echo docker push --help
+    - docker push --help
     - docker push $IMAGE_NAME
     - docker push $IMAGE_NAME:$IMAGE_TAG
