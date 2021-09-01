@@ -1,6 +1,7 @@
-version: 0.3
+version: 0.2
 phases:
   pre_build:
+    on-failure: ABORT
     commands:
     - echo Logging in to Amazon ECR....
     - aws --version
@@ -11,11 +12,13 @@ phases:
     - IMAGE_NAME=$REPOSITORY_URI/$IMAGE_REPO_NAME
     - echo image $IMAGE_NAME
   build:
+    on-failure: ABORT
     commands:
     - echo Build started on `date`
     - echo Building the Docker image...
     - docker build -t $IMAGE_NAME -t $IMAGE_NAME:$IMAGE_TAG .
   post_build:
+    on-failure: ABORT
     commands:
     - echo Build completed on `date`
     - echo pushing to repo

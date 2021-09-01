@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM 509517228226.dkr.ecr.us-east-1.amazonaws.com/node:12-alpine
 
 ENV PORT=4000
 
